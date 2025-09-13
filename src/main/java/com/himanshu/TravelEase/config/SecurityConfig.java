@@ -20,6 +20,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.POST, "/api/flights", "/api/hotels", "/api/cars", "/api/packages").hasAuthority("ADMIN")
@@ -45,7 +46,6 @@ public class SecurityConfig {
             authorities.forEach(authority -> {
                 if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
                     String username = oauth2UserAuthority.getAttributes().get("login").toString();
-                    // Replace "YOUR_GITHUB_USERNAME" with your actual GitHub username
                     if ("HimanshuNaik19".equalsIgnoreCase(username)) {
                         mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
                     }
